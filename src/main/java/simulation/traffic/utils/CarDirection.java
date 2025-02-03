@@ -1,4 +1,4 @@
-package simulation.traffic.model.utils;
+package simulation.traffic.utils;
 
 public enum CarDirection {
     LEFT,

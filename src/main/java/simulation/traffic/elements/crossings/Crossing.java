@@ -1,11 +1,13 @@
 package simulation.traffic.elements.crossings;
 
-import simulation.traffic.elements.cars.Car;
-import simulation.traffic.model.utils.Command;
+import simulation.traffic.elements.Car;
 
 public interface Crossing {
-    public void addCar(Car car);
-    public void calcNewLightStatus();
-    public void moveFirstCars();
-    public void incrementWaitingTimes();
+    void addCar(Car car);
+
+    void calcNewLightStatus();
+
+    void moveFirstCars();
+
+    void incrementWaitingTimes();
 }

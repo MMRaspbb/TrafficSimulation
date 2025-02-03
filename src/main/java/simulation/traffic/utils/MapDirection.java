@@ -1,6 +1,4 @@
-package simulation.traffic.model.utils;
-
-import java.util.Map;
+package simulation.traffic.utils;
 
 public enum MapDirection {
     N,
@@ -8,8 +6,8 @@ public enum MapDirection {
     W,
     E;
 
-    public static MapDirection stringToMapDirection(String string){
-        return switch(string){
+    public static MapDirection stringToMapDirection(String string) {
+        return switch (string) {
             case "north" -> N;
             case "east" -> E;
             case "south" -> S;
@@ -19,14 +17,15 @@ public enum MapDirection {
     }
 
     public static int parseDirection(MapDirection direction) {
-        return switch(direction) {
+        return switch (direction) {
             case N -> 0;
             case E -> 1;
             case S -> 2;
             case W -> 3;
         };
     }
-    public static MapDirection intToDirection(int value){
+
+    public static MapDirection intToDirection(int value) {
         return switch (value % 4) {
             case 0 -> N;
             case 1 -> E;
@@ -35,6 +34,7 @@ public enum MapDirection {
             default -> throw new IllegalStateException("Unexpected value: " + value % 4);
         };
     }
+
     public MapDirection spinClockwise(int value) {
         return switch ((parseDirection(this) + value) % 4) {
             case 0 -> N;
@@ -47,7 +47,7 @@ public enum MapDirection {
 
     @Override
     public String toString() {
-        return switch(this) {
+        return switch (this) {
             case N -> "^";
             case S -> "v";
             case W -> "<";

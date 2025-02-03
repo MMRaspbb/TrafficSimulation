@@ -3,7 +3,7 @@ plugins {
     id 'java'
 }
 
-group = 'org.example'
+group = 'simulation.traffic'
 version = '1.0-SNAPSHOT'
 
 repositories {
@@ -23,4 +23,8 @@ application {
 
 test {
     useJUnitPlatform()
+
+    testLogging {
+        events "failed", "passed", "skipped", "standardError","standardOut"
+    }
 }

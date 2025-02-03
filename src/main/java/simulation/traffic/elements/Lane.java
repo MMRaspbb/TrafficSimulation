@@ -1,19 +1,16 @@
 package simulation.traffic.elements;
 
-import simulation.traffic.elements.cars.Car;
-import simulation.traffic.model.utils.MapDirection;
+import simulation.traffic.utils.MapDirection;
 
 import java.util.ArrayDeque;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
 
 public class Lane {
-    private MapDirection beginning;
-    private List<MapDirection> desitnations;
-    private Queue<Car> carQueue = new ArrayDeque<>();
-    private boolean greenLightOn = false;
-    private Light light;
+    private final MapDirection beginning;
+    private final List<MapDirection> desitnations;
+    private final Queue<Car> carQueue = new ArrayDeque<>();
+    private final Light light;
 
     public Lane(MapDirection beginning, List<MapDirection> destinations, Boolean initLightState) {
         this.beginning = beginning;
@@ -59,15 +56,15 @@ public class Lane {
         }
     }
 
-    public int[] getLongestAwaitingTimeAmountToPush(int timeDelay){
+    public int[] getLongestAwaitingTimeAmountToPush(int timeDelay) {
         Car firstCar = getFirstCarInLane();
-        if(firstCar == null) return new int[]{0, 0};
-        int longestAwaitingTime = carQueue.peek().getAwaitingTime();
+        if (firstCar == null) return new int[]{0, 0};
+        int longestAwaitingTime = firstCar.getAwaitingTime();
         int longestAwaitingCarsCount = 0;
         int secondLongestAwaitingCarsCount = 0;
-        for(Car car: carQueue){
-            if(car.getAwaitingTime() == longestAwaitingTime) longestAwaitingCarsCount++;
-            else if(car.getAwaitingTime() > longestAwaitingCarsCount - timeDelay) secondLongestAwaitingCarsCount++;
+        for (Car car : carQueue) {
+            if (car.getAwaitingTime() == longestAwaitingTime) longestAwaitingCarsCount++;
+            else if (car.getAwaitingTime() > longestAwaitingCarsCount - timeDelay) secondLongestAwaitingCarsCount++;
             else break;
         }
         return new int[]{longestAwaitingTime, longestAwaitingCarsCount + (secondLongestAwaitingCarsCount / 2)};

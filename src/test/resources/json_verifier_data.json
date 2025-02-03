@@ -1,0 +1,49 @@
+{
+  "correct_input_1": {
+    "commands": [
+      {
+        "type": "addVehicle",
+        "vehicleId": "vehicle1",
+        "startRoad": "west",
+        "endRoad": "east"
+      }
+    ]
+  },
+  "correct_input_2" : {
+    "commands": [
+      {
+        "type": "addVehicle",
+        "vehicleId": "vehicle2",
+        "startRoad": "north",
+        "endRoad": "south"
+      }
+    ]
+  },
+  "correct_input_3" : {
+    "commands": [
+      {
+        "type": "step"
+      }
+    ]
+  },
+  "incorrect_command_input": {
+    "commands": [
+      {
+        "type": "incorrectType",
+        "vehicleId": "vehicle2",
+        "startRoad": "north",
+        "endRoad": "south"
+      }
+    ]
+  },
+  "incorrect_road_direction_input": {
+    "commands": [
+      {
+        "type": "addVehicle",
+        "vehicleId": "vehicle2",
+        "startRoad": "wrongDirection",
+        "endRoad": "south"
+      }
+    ]
+  }
+}

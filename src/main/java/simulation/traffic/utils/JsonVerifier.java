@@ -1,10 +1,8 @@
-package simulation.traffic.model.utils;
+package simulation.traffic.utils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import simulation.traffic.exception.JsonVerificationException;
-
-import java.util.List;
+import simulation.traffic.exceptions.JsonVerificationException;
 
 public class JsonVerifier {
     public static Command[] verifyInputJson(JSONObject input) throws JsonVerificationException {
@@ -33,10 +31,10 @@ public class JsonVerifier {
             Type commandType;
             try {
                 commandType = Type.stringToType(jsonObject.getString(TYPE));
-            }catch (IllegalArgumentException e){
+            } catch (IllegalArgumentException e) {
                 throw new JsonVerificationException("Command has invalid type.");
             }
-            if(commandType == Type.STEP){
+            if (commandType == Type.STEP) {
                 if (jsonObject.length() != STEPCOMMANDSIZE) {
                     throw new JsonVerificationException("Command of type " + STEP + " should only contain " + STEPCOMMANDSIZE + " object.");
                 }
@@ -53,11 +51,21 @@ public class JsonVerifier {
             if (!jsonObject.has(STARTROAD)) {
                 throw new JsonVerificationException("Vehicle doesn't have startRoad.");
             }
-            MapDirection startRoad = MapDirection.stringToMapDirection(jsonObject.getString(STARTROAD));
+            MapDirection startRoad;
+            try {
+                startRoad = MapDirection.stringToMapDirection(jsonObject.getString(STARTROAD));
+            } catch (IllegalStateException e) {
+                throw new JsonVerificationException("Command has incorrect road direction");
+            }
             if (!jsonObject.has(ENDROAD)) {
                 throw new JsonVerificationException("Vehicle doesn't have endRoad.");
             }
-            MapDirection endRoad = MapDirection.stringToMapDirection(jsonObject.getString(ENDROAD));
+            MapDirection endRoad;
+            try {
+                endRoad = MapDirection.stringToMapDirection(jsonObject.getString(ENDROAD));
+            } catch (IllegalStateException e) {
+                throw new JsonVerificationException("Command has incorrect road direction");
+            }
             commands[i] = new Command(commandType, vehicleId, startRoad, endRoad);
         }
         return commands;

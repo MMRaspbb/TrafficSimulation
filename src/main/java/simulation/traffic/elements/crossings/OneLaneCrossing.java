@@ -1,15 +1,12 @@
 package simulation.traffic.elements.crossings;
 
 import simulation.traffic.elements.Lane;
-import simulation.traffic.elements.Light;
-import simulation.traffic.elements.cars.Car;
-import simulation.traffic.model.utils.CarDirection;
-import simulation.traffic.model.utils.MapDirection;
+import simulation.traffic.elements.Car;
+import simulation.traffic.utils.CarDirection;
+import simulation.traffic.utils.MapDirection;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public class OneLaneCrossing implements Crossing {
     private static final int defaultCycle = 5;
@@ -25,8 +22,8 @@ public class OneLaneCrossing implements Crossing {
 
     private Lane makeLane(MapDirection beginning) {
         List<MapDirection> destinations = new ArrayList<>();
-        for(MapDirection direction: MapDirection.values()){
-            if(direction != beginning){
+        for (MapDirection direction : MapDirection.values()) {
+            if (direction != beginning) {
                 destinations.add(direction);
             }
         }
@@ -42,38 +39,38 @@ public class OneLaneCrossing implements Crossing {
     public void calcNewLightStatus() {
         int carsOnActiveLanes = 0;
         int carsOnInactiveLanes = 0;
-        for(Lane lane: lanes){
-            if(lane.getLightState()) carsOnActiveLanes += lane.getCarCount();
+        for (Lane lane : lanes) {
+            if (lane.getLightState()) carsOnActiveLanes += lane.getCarCount();
             else carsOnInactiveLanes += lane.getCarCount();
         }
-        if(carsOnInactiveLanes == 0 && stepsToCyclesEnd == 1) {
+        if (carsOnInactiveLanes == 0 && stepsToCyclesEnd == 1) {
             return;
-        }
-        else if(carsOnActiveLanes == 0){
+        } else if (carsOnActiveLanes == 0) {
             stepsToCyclesEnd = 1;
         }
         stepsToCyclesEnd--;
         int averageCarsPerLane = (carsOnActiveLanes + carsOnInactiveLanes) / 4;
         switchLightsIfNecessary(averageCarsPerLane);
     }
-    private void switchLightsIfNecessary(int averageCarsPerLane){
+
+    private void switchLightsIfNecessary(int averageCarsPerLane) {
         if (stepsToCyclesEnd == 0) {
             int newCycleTime = 0;
             for (Lane lane : lanes) {
-                if(!lane.getLightState()){
+                if (!lane.getLightState()) {
                     newCycleTime = Math.max(newCycleTime, lane.getLongestAwaitingTimeAmountToPush(defaultCycle)[1]);
                 }
                 lane.changeLightState();
             }
             stepsToCyclesEnd = averageCarsPerLane;
-            if(newCycleTime > averageCarsPerLane){
+            if (newCycleTime > averageCarsPerLane) {
                 stepsToCyclesEnd = Math.min(newCycleTime, averageCarsPerLane * 2);
             }
-            System.out.println(stepsToCyclesEnd);
         }
     }
-    public void incrementWaitingTimes(){
-        for(Lane lane: lanes){
+
+    public void incrementWaitingTimes() {
+        for (Lane lane : lanes) {
             lane.incrementCarsWaitingTime();
         }
     }
@@ -109,7 +106,7 @@ public class OneLaneCrossing implements Crossing {
                 return true;
             }
             Car firstCarOnLeftLane = laneOnTheLeft.getFirstCarInLane();
-            if(firstCarOnLeftLane.getDirection() != CarDirection.FORWARD){
+            if (firstCarOnLeftLane.getDirection() != CarDirection.FORWARD) {
                 return true;
             }
             return false;
@@ -118,7 +115,7 @@ public class OneLaneCrossing implements Crossing {
             return false;
         }
         int laneOnTheOppositeIndex = MapDirection.parseDirection(lane.getBeginning().spinClockwise(2));
-        if(lanes.get(laneOnTheOppositeIndex).getCarCount() == 0){
+        if (lanes.get(laneOnTheOppositeIndex).getCarCount() == 0) {
             return true;
         }
         CarDirection firstCarOnTheOppositeLaneDirection = lanes.get(laneOnTheOppositeIndex).getFirstCarInLane().getDirection();

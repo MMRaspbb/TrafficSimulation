@@ -1,28 +1,27 @@
-package simulation.traffic.elements.cars;
+package simulation.traffic.elements;
 
-import simulation.traffic.model.utils.CarDirection;
-import simulation.traffic.model.utils.MapDirection;
-import simulation.traffic.model.utils.OutputWriter;
+import simulation.traffic.utils.CarDirection;
+import simulation.traffic.utils.MapDirection;
+import simulation.traffic.utils.OutputWriter;
 
 public class Car {
-    private MapDirection startRoad;
-    private MapDirection endRoad;
-    private String vehicleId;
-    private OutputWriter outputWriter = new OutputWriter();
-    private CarDirection direction;
+    private final MapDirection startRoad;
+    private final MapDirection endRoad;
+    private final String vehicleId;
+    private final OutputWriter outputWriter;
+    private final CarDirection direction;
     private int awaitingTime = 0;
+
     public Car(String vehicleId, MapDirection startRoad, MapDirection endRoad, OutputWriter outputWriter) {
         this.vehicleId = vehicleId;
         this.startRoad = startRoad;
         this.endRoad = endRoad;
         this.outputWriter = outputWriter;
-        if(startRoad.spinClockwise(1) == endRoad){
+        if (startRoad.spinClockwise(1) == endRoad) {
             direction = CarDirection.LEFT;
-        }
-        else if(startRoad.spinClockwise(2) == endRoad){
+        } else if (startRoad.spinClockwise(2) == endRoad) {
             direction = CarDirection.FORWARD;
-        }
-        else{
+        } else {
             direction = CarDirection.RIGHT;
         }
     }
@@ -34,6 +33,7 @@ public class Car {
     public CarDirection getDirection() {
         return direction;
     }
+
     public MapDirection getEndRoad() {
         return endRoad;
     }
@@ -41,17 +41,21 @@ public class Car {
     public String getVehicleId() {
         return vehicleId;
     }
-    public void move(){
+
+    public void move() {
         outputWriter.updateCarsInDestination(this.toString());
     }
-    public void incrementAwaitingTime(){
+
+    public void incrementAwaitingTime() {
         awaitingTime++;
     }
-    public int getAwaitingTime(){
+
+    public int getAwaitingTime() {
         return awaitingTime;
     }
+
     @Override
-    public String toString(){
+    public String toString() {
         return vehicleId;
     }
 }
